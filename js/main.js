@@ -66,7 +66,7 @@ var App = {
     },
     cv: function() {
         this.echo("Loading my resume");
-        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachWebsite/AlexThachResumev1.docx'; }, 1000);
+        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachWebsite/Alex_Tran_Thach_Resume_v3.pdf'; }, 1000);
         if (typeof ga !== 'undefined') ga('send', 'event', 'env');
     },
     oldsite: function() {
@@ -78,6 +78,15 @@ var App = {
         this.echo("Loading my github...");
         setTimeout(function() { document.location.href = 'https://github.com/Lexicon121'; }, 1000);
         if (typeof ga !== 'undefined') ga('send', 'event', 'env');
+    },
+    clear: function() {
+        this.clear();
+        if (typeof ga !== 'undefined') ga('send', 'event', 'clear');
+    },
+    projects: function() {
+        this.echo("Loading my projects...");
+        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachWebsite/Projects.html'; }, 1000);
+        if (typeof ga !== 'undefined') ga('send', 'event', 'projects');
     }
 };
 
