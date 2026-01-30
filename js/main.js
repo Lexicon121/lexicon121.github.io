@@ -23,7 +23,7 @@ var App = {
     blog: function() {
         if (typeof ga !== 'undefined') ga('send', 'event', 'blog');
         this.echo("Loading the blog... Wait a sec ...");
-        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachWebsite/'; }, 1000);
+        setTimeout(function() { document.location.href = 'https://medium.com/@alex.thach3'; }, 1000);
     },
     publicPGPkey: function() {
         showPGP(this);
@@ -169,9 +169,9 @@ $(document).ready(function() {
             tabcompletion: true
         });
 
-        // Automatically focus on the terminal input field
+        // Automatically focus on the input field
         setTimeout(() => {
-            $('.terminal').find('.cursor').focus();
+            $('.cmd-clipboard').focus();
         }, 100); // slight delay to ensure the focus is applied
     }
 
