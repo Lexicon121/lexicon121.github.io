@@ -5,11 +5,11 @@
   <meta charset="utf-8" />
   <title>lexiethach:~#</title>
   <meta name="description" content="Lexie Thach's personal website" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <link rel="shortcut icon" href="favicon.ico" />
-  <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,600' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,600' rel='stylesheet' type='text/css'>
   <link href="css/jquery.terminal.css" rel="stylesheet" />
   <link href="https://unpkg.com/jquery.terminal/css/jquery.terminal.min.css" rel="stylesheet" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="js/jquery.mousewheel-min.js"></script>
   <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
@@ -27,68 +27,88 @@
     gtag('config', 'UA-80531617-1');
   </script>
   <style>
-    /* Add this CSS to your existing stylesheet or create a new one */
-    /* Default styles for desktop */
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Source Code Pro', monospace;
       background-color: #000;
       color: #0f0;
       font-size: 16px;
-    }
-
-    /* Styles for tablets */
-    @media (max-width: 768px) {
-      body {
-        font-size: 14px;
-      }
-
-      .terminal {
-        width: 90%;
-        height: 400px;
-        margin: auto;
-      }
-    }
-
-    /* Styles for mobile phones */
-    @media (max-width: 480px) {
-      body {
-        font-size: 12px;
-      }
-
-      .terminal {
-        width: 100%;
-        height: 300px;
-        margin: auto;
-      }
-    }
-
-    /* ASCII Art Centering */
-    .ascii-art {
-      text-align: center;
-      white-space: pre-wrap;
-      /* Adjusts white space for responsive */
-      font-size: 1.5em;
-      /* Adjust as needed */
-      line-height: 1.2em;
-      /* Adjust as needed */
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      /* Full viewport height */
+      min-height: 100vh;
     }
 
-    /* Responsive scaling for ASCII art */
+    .terminal-container {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .terminal {
+      max-width: 100%;
+    }
+
+    /* Tablets (768px and below) */
     @media (max-width: 768px) {
-      .ascii-art {
-        font-size: 1.2em;
+      body {
+        font-size: 13px;
+        min-height: auto;
+      }
+
+      .terminal-container {
+        padding: 10px;
+        width: 100%;
+      }
+
+      .jquery-terminal {
+        font-size: 13px;
       }
     }
 
+    /* Mobile phones (480px and below) */
     @media (max-width: 480px) {
-      .ascii-art {
-        font-size: 1em;
+      body {
+        font-size: 11px;
+        min-height: auto;
       }
+
+      .terminal-container {
+        padding: 5px;
+        width: 100%;
+      }
+
+      .jquery-terminal {
+        font-size: 11px;
+        line-height: 1.3;
+      }
+
+      .terminal-container .terminal {
+        width: 100% !important;
+        height: 70vh !important;
+        max-height: 500px;
+      }
+    }
+
+    /* ASCII Art styling */
+    .ascii-art {
+      text-align: center;
+      white-space: pre;
+      line-height: 1;
     }
   </style>
 </head>

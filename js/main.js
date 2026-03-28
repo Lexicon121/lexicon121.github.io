@@ -113,51 +113,61 @@ $(document).ready(function() {
     const isTablet = window.matchMedia("only screen and (max-width: 768px)").matches;
 
     let termWidth = '600px';
-    let termHeight = '400px';
+    let termHeight = '500px';
 
     if (isMobile) {
         termWidth = '100%';
-        termHeight = '300px';
+        termHeight = '70vh';
     } else if (isTablet) {
-        termWidth = '90%';
-        termHeight = '400px';
+        termWidth = '95%';
+        termHeight = '60vh';
     }
+
+    // Simplified greeting for mobile
+    const mobileGreeting = "[[b;#66ffff;]" +
+        "SYSTEM BOOT COMPLETE.............................( OK )\n\n" +
+        "Welcome to Lexie Thach's personal website!\n" +
+        "Type 'help' for available commands.\n" +
+        "root]@lexiethach.com:~# ";
+
+    // Full greeting with ASCII art for desktop
+    const desktopGreeting = "[[b;#66ffff;]" +
+        "Starting udev:...................................( OK )\n" +
+        "Mount devpts:....................................( OK )\n" +
+        "Configure kernel options.........................( OK )\n" +
+        "Setting clock: " + Date.now() + ".....................( OK )\n" +
+        "SYSTEM BOOT COMPLETE.............................( OK )\n\n\n" +
+        "~MOTD~\n" +
+        "     ##### /                                                 /###           /  /                             /       \n" +
+        "  ######  /                               #                 /  ############/ #/                            #/        \n" +
+        " /#   /  /                               ###               /     #########   ##                            ##        \n" +
+        "/    /  /                                 #                #     /  #        ##                            ##        \n" +
+        "    /  /                                                    ##  /  ##        ##                            ##        \n" +
+        "   ## ##              /##   /##    ###  ###       /##          /  ###        ##  /##      /###     /###    ##  /##   \n" +
+        "   ## ##             / ### / ###  #### / ###     / ###        ##   ##        ## / ###    / ###  / / ###  / ## / ###  \n" +
+        "   ## ##            /   ###   ### /###/   ##    /   ###       ##   ##        ##/   ###  /   ###/ /   ###/  ##/   ### \n" +
+        "   ## ##           ##    ###   ##/  ##    ##   ##    ###      ##   ##        ##     ## ##    ## ##         ##     ## \n" +
+        "   ## ##           ########     /##       ##   ########       ##   ##        ##     ## ##    ## ##         ##     ## \n" +
+        "   #  ##           #######     / ###      ##   #######         ##  ##        ##     ## ##    ## ##         ##     ## \n" +
+        "      /            ##         /   ###     ##   ##               ## #      /  ##     ## ##    ## ##         ##     ## \n" +
+        "  /##/           / ####    / /     ###    ##   ####    /         ###     /   ##     ## ##    /# ###     /  ##     ## \n" +
+        " /  ############/   ######/ /       ### / ### / ######/           ######/    ##     ##  ####/ ## ######/   ##     ## \n" +
+        "/     #########      ##### /         ##/   ##/   #####              ###       ##    ##   ###   ## #####     ##    ## \n" +
+        "#                                                                                   /                             /  \n" +
+        " ##                                                                                /                             /   \n" +
+        "                                                                                  /                             /    \n" +
+        "                                                                                 /                             /     \n" +
+        "Welcome to Lexie Thach's personal website!\n\n" +
+        "Quick Commands\n" +
+        "\techo          env          help\n" +
+        "\tid           ls           whoami\n\n" +
+        "root]@lexiethach.com:~# env\n[[b;#66ffff;]NAME=LexieThach\nTITLE=SecurityEngineer;RobotHacker\nMEDIUMBLOG=https://medium.com/@alex.thach3\nGITHUB=https://github.com/Lexicon121\nBLUESKY=@lexiecon.bsky.social\n_=/usr/bin/env]";
 
     function startTerminal() {
         const terminal = $('.terminal').terminal(App, {
             width: termWidth,
             height: termHeight,
-            greetings: "[[b;#66ffff;]" +
-                "Starting udev:...................................( OK )\n" +
-                "Mount devpts:....................................( OK )\n" +
-                "Configure kernel options.........................( OK )\n" +
-                "Setting clock: " + Date.now() + ".....................( OK )\n" +
-                "SYSTEM BOOT COMPLETE.............................( OK )\n\n\n" +
-                "~MOTD~\n" +
-                "     ##### /                                                 /###           /  /                             /       \n" +
-                "  ######  /                               #                 /  ############/ #/                            #/        \n" +
-                " /#   /  /                               ###               /     #########   ##                            ##        \n" +
-                "/    /  /                                 #                #     /  #        ##                            ##        \n" +
-                "    /  /                                                    ##  /  ##        ##                            ##        \n" +
-                "   ## ##              /##   /##    ###  ###       /##          /  ###        ##  /##      /###     /###    ##  /##   \n" +
-                "   ## ##             / ### / ###  #### / ###     / ###        ##   ##        ## / ###    / ###  / / ###  / ## / ###  \n" +
-                "   ## ##            /   ###   ### /###/   ##    /   ###       ##   ##        ##/   ###  /   ###/ /   ###/  ##/   ### \n" +
-                "   ## ##           ##    ###   ##/  ##    ##   ##    ###      ##   ##        ##     ## ##    ## ##         ##     ## \n" +
-                "   ## ##           ########     /##       ##   ########       ##   ##        ##     ## ##    ## ##         ##     ## \n" +
-                "   #  ##           #######     / ###      ##   #######         ##  ##        ##     ## ##    ## ##         ##     ## \n" +
-                "      /            ##         /   ###     ##   ##               ## #      /  ##     ## ##    ## ##         ##     ## \n" +
-                "  /##/           / ####    / /     ###    ##   ####    /         ###     /   ##     ## ##    /# ###     /  ##     ## \n" +
-                " /  ############/   ######/ /       ### / ### / ######/           ######/    ##     ##  ####/ ## ######/   ##     ## \n" +
-                "/     #########      ##### /         ##/   ##/   #####              ###       ##    ##   ###   ## #####     ##    ## \n" +
-                "#                                                                                   /                             /  \n" +
-                " ##                                                                                /                             /   \n" +
-                "                                                                                  /                             /    \n" +
-                "                                                                                 /                             /     \n" +
-                "Welcome to Lexie Thach's personal website!\n\n" +
-                "Quick Commands\n" +
-                "\techo          env          help\n" +
-                "\tid           ls           whoami\n\n" +
-                "root]@lexiethach.com:~# env\n[[b;#66ffff;]NAME=LexieThach\nTITLE=SecurityEngineer;RobotHacker\nMEDIUMBLOG=https://medium.com/@alex.thach3\nGITHUB=https://github.com/Lexicon121\nBLUESKY=@lexiecon.bsky.social\n_=/usr/bin/env]",
+            greetings: isMobile ? mobileGreeting : desktopGreeting,
             prompt: function(p) {
                 var path = '~';
                 p(e + ":" + path + "# ");
