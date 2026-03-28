@@ -150,15 +150,12 @@ $(document).ready(function() {
     const isTablet = window.matchMedia("only screen and (max-width: 768px)").matches;
 
     // Simplified greeting for mobile
-    const mobileGreeting = "[[b;#66ffff;]" +
-        "SYSTEM BOOT COMPLETE.............................( OK )\n\n" +
+    const mobileGreeting = "SYSTEM BOOT COMPLETE.............................( OK )\n\n" +
         "Welcome to Lexie Thach's personal website!\n" +
-        "Type 'help' for available commands.\n" +
-        "root]@lexiethach.com:~# ";
+        "Type 'help' for available commands.\n";
 
     // Full greeting with ASCII art for desktop
-    const desktopGreeting = "[[b;#66ffff;]" +
-        "Starting udev:...................................( OK )\n" +
+    const desktopGreeting = "Starting udev:...................................( OK )\n" +
         "Mount devpts:....................................( OK )\n" +
         "Configure kernel options.........................( OK )\n" +
         "Setting clock: " + Date.now() + ".....................( OK )\n" +
@@ -186,31 +183,40 @@ $(document).ready(function() {
         "Welcome to Lexie Thach's personal website!\n\n" +
         "Quick Commands\n" +
         "\techo          env          help\n" +
-        "\tid           ls           whoami\n\n" +
-        "root]@lexiethach.com:~# env\n[[b;#66ffff;]NAME=LexieThach\nTITLE=SecurityEngineer;RobotHacker\nMEDIUMBLOG=https://medium.com/@alex.thach3\nGITHUB=https://github.com/Lexicon121\nBLUESKY=@lexiecon.bsky.social\n_=/usr/bin/env]";
+        "\tid           ls           whoami\n";
 
     function startTerminal() {
-        $('.terminal').terminal(App, {
-            greetings: isMobile ? mobileGreeting : desktopGreeting,
-            prompt: function(p) {
-                var path = '~';
-                p(e + ":" + path + "# ");
-            },
-            onBlur: function() {
-                return false;
-            },
-            tabcompletion: true,
-            scrollOnEcho: true,
-            enabled: true
-        });
-
-        setTimeout(() => {
-            const terminal = $('.terminal').terminal();
-            if (terminal && terminal.focus) {
-                terminal.focus();
-            }
-        }, 100);
+        try {
+            const terminal = $('.terminal').terminal(App, {
+                greetings: isMobile ? mobileGreeting : desktopGreeting,
+                prompt: function(p) {
+                    var path = '~';
+                    p(e + ":" + path + "# ");
+                },
+                onBlur: function() {
+                    return false;
+                },
+                tabcompletion: true,
+                scrollOnEcho: true,
+                enabled: true,
+                onInit: function(term) {
+                    // Force resize and repaint
+                    term.resize();
+                    term.focus();
+                }
+            });
+        } catch(err) {
+            console.error('Terminal initialization error:', err);
+            // Fallback - show error message
+            $('.terminal').html('<div style="color: #0f0; padding: 20px;">Terminal initialization failed. Error: ' + err.message + '</div>');
+        }
     }
 
-    startTerminal();
+    // Ensure jQuery Terminal is available before initializing
+    if (typeof jQuery !== 'undefined' && jQuery.fn && jQuery.fn.terminal) {
+        startTerminal();
+    } else {
+        console.error('jQuery Terminal is not loaded');
+        setTimeout(startTerminal, 500); // Retry after 500ms
+    }
 });
