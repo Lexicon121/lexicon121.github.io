@@ -1,12 +1,49 @@
 var e = "[[b;#66ffff;]root]@lexiethach.com";
+
+// Security utility functions
+function sanitizeInput(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/[&<>"']/g, function(char) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#x27;'
+        };
+        return map[char];
+    });
+}
+
+function isValidRedirectUrl(url) {
+    const allowedDomains = [
+        'lexicon121.github.io',
+        'github.com',
+        'medium.com',
+        'hmpg.net'
+    ];
+    try {
+        const urlObj = new URL(url);
+        return allowedDomains.some(domain => urlObj.hostname.includes(domain));
+    } catch {
+        return false;
+    }
+}
+
+function safeRedirect(url) {
+    if (isValidRedirectUrl(url)) {
+        document.location.href = url;
+    }
+}
+
 var App = {
     echo: function(text) {
-        this.echo(text);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'echo', 'text', text);
+        this.echo(sanitizeInput(text));
+        if (typeof gtag !== 'undefined') gtag('event', 'echo', { text: sanitizeInput(text) });
     },
     help: function() {
         showHelp(this);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'help');
+        if (typeof gtag !== 'undefined') gtag('event', 'help');
     },
     ls: function() {
         this.echo('[[b;#66ffff;]autoexec.cfg]');
@@ -14,79 +51,79 @@ var App = {
         this.echo('[[b;#66ffff;]IAC-2023,80363.matter.pdf]');
         this.echo('[[b;#66ffff;]AlexThachResumev1.docx]');
         this.echo('[[b;#66ffff;]AlexThachFederalResumev1.docx]');
-        if (typeof ga !== 'undefined') ga('send', 'event', 'ls');
+        if (typeof gtag !== 'undefined') gtag('event', 'ls');
     },
     whoami: function() {
         this.echo("root");
-        if (typeof ga !== 'undefined') ga('send', 'event', 'whoami');
+        if (typeof gtag !== 'undefined') gtag('event', 'whoami');
     },
     blog: function() {
-        if (typeof ga !== 'undefined') ga('send', 'event', 'blog');
+        if (typeof gtag !== 'undefined') gtag('event', 'blog');
         this.echo("Loading the blog... Wait a sec ...");
-        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachWebsite/'; }, 1000);
+        setTimeout(function() { safeRedirect('https://lexicon121.github.io/LexieThachWebsite/'); }, 1000);
     },
     publicPGPkey: function() {
         showPGP(this);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'publicPGPkey');
+        if (typeof gtag !== 'undefined') gtag('event', 'publicPGPkey');
     },
     donate: function() {
         this.echo("\nBitcoin (BTC) - 3Pgqkda3w8ZTzBGT5DeLDiWdkgNTNjNxvo\n");
         this.echo("Ethereum (ETH) - 0x31Dcb542BA6dDf0b16EcB36B5Aedf14d5CEcB897\n");
         this.echo("Tether (USDT) - 0x96AfE6640a310265D3177eFC3bfEAa0dC6F4e31E\n");
-        if (typeof ga !== 'undefined') ga('send', 'event', 'tip');
+        if (typeof gtag !== 'undefined') gtag('event', 'donate');
     },
     su: function(user) {
-        this.echo("Not today, " + user);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'su');
+        this.echo("Not today, " + sanitizeInput(user));
+        if (typeof gtag !== 'undefined') gtag('event', 'su');
     },
     sudo: function(x) {
         this.error("Segmentation fault!");
-        if (typeof ga !== 'undefined') ga('send', 'event', 'sudo');
+        if (typeof gtag !== 'undefined') gtag('event', 'sudo');
     },
     cat: function(x) {
-        this.error("cat " + x + "?.....If only...");
-        if (typeof ga !== 'undefined') ga('send', 'event', 'cat');
+        this.error("cat " + sanitizeInput(x) + "?.....If only...");
+        if (typeof gtag !== 'undefined') gtag('event', 'cat');
     },
     www: function() {
-        this.echo("This page built with <a href='http://terminal.jcubic.pl/' target='_blank'>jQuery Terminal Emulator</a> plugin, and hosted by <a href='http://pages.github.com' target='_blank'>GitHub Pages<a/>.", { raw: true });
-        if (typeof ga !== 'undefined') ga('send', 'event', 'www');
+        this.echo("This page built with <a href='https://terminal.jcubic.pl/' target='_blank'>jQuery Terminal Emulator</a> plugin, and hosted by <a href='https://pages.github.com' target='_blank'>GitHub Pages</a>.", { raw: true });
+        if (typeof gtag !== 'undefined') gtag('event', 'www');
     },
     id: function() {
         this.echo("uid=0(root) gid=0(root) groups=0(root)");
-        if (typeof ga !== 'undefined') ga('send', 'event', 'id');
+        if (typeof gtag !== 'undefined') gtag('event', 'id');
     },
     shutdown: function() {
         this.error('SYSTEM HALT!');
-        setTimeout(function() { document.location.href = 'https://hmpg.net/'; }, 2500);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'shutdown');
+        setTimeout(function() { safeRedirect('https://hmpg.net/'); }, 2500);
+        if (typeof gtag !== 'undefined') gtag('event', 'shutdown');
     },
     env: function() {
         this.echo("[[b;#66ffff;]NAME=LexieThach\nTITLE=SecurityEngineer;RobotHacker\nMEDIUMBLOG=https://medium.com/@alex.thach3\nGITHUB=https://github.com/Lexicon121\nBLUESKY=@lexiecon.bsky.social\n_=/usr/bin/env]");
-        if (typeof ga !== 'undefined') ga('send', 'event', 'env');
+        if (typeof gtag !== 'undefined') gtag('event', 'env');
     },
     cv: function() {
         this.echo("Loading my resume");
-        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachWebsite/Alex_Tran_Thach_Resume_v3.pdf'; }, 1000);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'env');
+        setTimeout(function() { safeRedirect('https://lexicon121.github.io/LexieThachWebsite/Alex_Tran_Thach_Resume_v3.pdf'); }, 1000);
+        if (typeof gtag !== 'undefined') gtag('event', 'cv');
     },
     oldsite: function() {
         this.echo("Loading my old site...");
-        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachSite/'; }, 1000);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'env');
+        setTimeout(function() { safeRedirect('https://lexicon121.github.io/LexieThachSite/'); }, 1000);
+        if (typeof gtag !== 'undefined') gtag('event', 'oldsite');
     },
     github: function() {
         this.echo("Loading my github...");
-        setTimeout(function() { document.location.href = 'https://github.com/Lexicon121'; }, 1000);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'env');
+        setTimeout(function() { safeRedirect('https://github.com/Lexicon121'); }, 1000);
+        if (typeof gtag !== 'undefined') gtag('event', 'github');
     },
     clear: function() {
         this.clear();
-        if (typeof ga !== 'undefined') ga('send', 'event', 'clear');
+        if (typeof gtag !== 'undefined') gtag('event', 'clear');
     },
     projects: function() {
         this.echo("Loading my projects...");
-        setTimeout(function() { document.location.href = 'https://lexicon121.github.io/LexieThachWebsite/Projects.html'; }, 1000);
-        if (typeof ga !== 'undefined') ga('send', 'event', 'projects');
+        setTimeout(function() { safeRedirect('https://lexicon121.github.io/LexieThachWebsite/Projects.html'); }, 1000);
+        if (typeof gtag !== 'undefined') gtag('event', 'projects');
     }
 };
 
