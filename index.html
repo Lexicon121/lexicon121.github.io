@@ -50,7 +50,7 @@
 
     .terminal-container {
       width: 100vw;
-      height: 100vh;
+      height: 100dvh;
       padding: 0;
       margin: 0;
       box-sizing: border-box;
@@ -69,6 +69,11 @@
     
     .terminal-output {
       background-color: #000 !important;
+      color: #0f0 !important;
+    }
+    
+    .terminal-output div {
+      color: #0f0 !important;
     }
     
     .terminal-output div div {
@@ -90,9 +95,22 @@
       color: #0f0 !important;
     }
     
+    .cmd .command {
+      color: #0f0 !important;
+    }
+    
+    .cmd input {
+      background-color: #000 !important;
+      color: #0f0 !important;
+    }
+    
     .cmd .cursor {
       background-color: #0f0 !important;
       color: #000 !important;
+    }
+    
+    .terminal, .cmd, .terminal .terminal-output div div, .cmd .prompt {
+      color: #0f0 !important;
     }
 
     /* Tablets (768px and below) */
