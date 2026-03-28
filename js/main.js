@@ -149,10 +149,51 @@ $(document).ready(function() {
     const isMobile = window.matchMedia("only screen and (max-width: 480px)").matches;
     const isTablet = window.matchMedia("only screen and (max-width: 768px)").matches;
 
-    // Simplified greeting for mobile
-    const mobileGreeting = "SYSTEM BOOT COMPLETE.............................( OK )\n\n" +
-        "Welcome to Lexie Thach's personal website!\n" +
-        "Type 'help' for available commands.\n";
+    // Handle mobile keyboard by adjusting height on viewport resize
+    let initialViewportHeight = window.innerHeight;
+    function handleViewportResize() {
+        const currentHeight = window.innerHeight;
+        const heightDifference = initialViewportHeight - currentHeight;
+
+        // If height decreased significantly (keyboard opened), adjust terminal
+        if (heightDifference > 150) { // Keyboard likely opened
+            $('.terminal-container').css('height', currentHeight + 'px');
+        } else if (heightDifference < 50) { // Keyboard likely closed
+            $('.terminal-container').css('height', '100dvh');
+        }
+    }
+
+    // Listen for viewport changes (keyboard open/close)
+    window.addEventListener('resize', handleViewportResize);
+    window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+            initialViewportHeight = window.innerHeight;
+            $('.terminal-container').css('height', '100dvh');
+        }, 100);
+    });
+
+    // Mobile greeting with condensed ASCII art
+    const mobileGreeting = "[[b;#66ffff;]SYSTEM BOOT COMPLETE.............................( OK )]]\n\n" +
+        "[[b;#66ffff;]~MOTD~]]\n" +
+        "     ##### /                    /###     \n" +
+        "  ######  /     #              /  ############/ #/  \n" +
+        " /#   /  /    ###             /     #########   ##  \n" +
+        "/    /  /     #              #     /  #        ##  \n" +
+        "    /  /                     ##  /  ##        ##  \n" +
+        "   ## ##     /##   /##  ###     /  ###        ##   \n" +
+        "   ## ##    / ### / ### ####   ##   ##        ##   \n" +
+        "   ## ##   /   ###   ### ###  ##   ##        ##    \n" +
+        "   ## ##  ##    ###   ##  ##  ##   ##        ##    \n" +
+        "   ## ##  ########     /##   ##   ##        ##    \n" +
+        "   #  ##  #######     / ###   ##  ##        ##    \n" +
+        "      /   ##         /   ###   ## #      /  ##    \n" +
+        "  /##/   / ####    /     ###   ###     /   ##    \n" +
+        " /  ############/   ######/     ######/    ##    \n" +
+        "/     #########      #####       ###       ##    \n" +
+        "Welcome to Lexie Thach's personal website!\n\n" +
+        "[[b;#66ffff;]Quick Commands]]\n" +
+        "\techo          env          help\n" +
+        "\tid           ls           whoami\n";
 
     // Full greeting with ASCII art for desktop
     const desktopGreeting = "Starting udev:...................................( OK )\n" +
@@ -195,6 +236,15 @@ $(document).ready(function() {
                 },
                 onBlur: function() {
                     return false;
+                },
+                onFocus: function() {
+                    // On mobile, ensure terminal is properly sized when focused
+                    if (isMobile) {
+                        setTimeout(function() {
+                            const currentHeight = window.innerHeight;
+                            $('.terminal-container').css('height', currentHeight + 'px');
+                        }, 300); // Delay to allow keyboard to fully open
+                    }
                 },
                 tabcompletion: true,
                 scrollOnEcho: true,
