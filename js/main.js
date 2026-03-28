@@ -146,6 +146,7 @@ function showHelp(consoleObj) {
 }
 
 $(document).ready(function() {
+    // Wait for DOM to be fully ready
     const isMobile = window.matchMedia("only screen and (max-width: 480px)").matches;
     const isTablet = window.matchMedia("only screen and (max-width: 768px)").matches;
 
@@ -153,8 +154,10 @@ $(document).ready(function() {
     let termHeight = '500px';
 
     if (isMobile) {
+        // Use window height minus UI elements for mobile
+        const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
         termWidth = '100%';
-        termHeight = '70vh';
+        termHeight = Math.max(400, windowHeight - 50) + 'px';
     } else if (isTablet) {
         termWidth = '95%';
         termHeight = '60vh';
@@ -201,25 +204,42 @@ $(document).ready(function() {
         "root]@lexiethach.com:~# env\n[[b;#66ffff;]NAME=LexieThach\nTITLE=SecurityEngineer;RobotHacker\nMEDIUMBLOG=https://medium.com/@alex.thach3\nGITHUB=https://github.com/Lexicon121\nBLUESKY=@lexiecon.bsky.social\n_=/usr/bin/env]";
 
     function startTerminal() {
-        const terminal = $('.terminal').terminal(App, {
-            width: termWidth,
-            height: termHeight,
-            greetings: isMobile ? mobileGreeting : desktopGreeting,
-            prompt: function(p) {
-                var path = '~';
-                p(e + ":" + path + "# ");
-            },
-            onBlur: function() {
-                // prevent losing focus
-                return false;
-            },
-            tabcompletion: true
-        });
+        try {
+            // Check if jQuery Terminal is loaded
+            if (!$.fn.terminal) {
+                console.error('jQuery Terminal not loaded');
+                document.body.innerHTML = '<div style="color:#0f0; padding:20px;">Error: Terminal library failed to load. Please refresh the page.</div>';
+                return;
+            }
 
-        // Automatically focus on the terminal input field
-        setTimeout(() => {
-            $('.terminal').find('.cursor').focus();
-        }, 100); // slight delay to ensure the focus is applied
+            const terminal = $('.terminal').terminal(App, {
+                width: termWidth,
+                height: termHeight,
+                greetings: isMobile ? mobileGreeting : desktopGreeting,
+                prompt: function(p) {
+                    var path = '~';
+                    p(e + ":" + path + "# ");
+                },
+                onBlur: function() {
+                    // prevent losing focus
+                    return false;
+                },
+                tabcompletion: true
+            });
+
+            // Automatically focus on the terminal input field
+            setTimeout(() => {
+                const cursor = $('.terminal').find('.cursor');
+                if (cursor.length) {
+                    cursor.focus();
+                } else {
+                    $('.terminal').focus();
+                }
+            }, 100);
+        } catch (error) {
+            console.error('Terminal initialization error:', error);
+            document.body.innerHTML = '<div style="color:#0f0; padding:20px;">Error initializing terminal: ' + error.message + '</div>';
+        }
     }
 
     startTerminal();

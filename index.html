@@ -49,8 +49,9 @@
       font-size: 16px;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
+      padding-top: 10px;
     }
 
     .terminal-container {
@@ -87,22 +88,27 @@
       body {
         font-size: 11px;
         min-height: auto;
+        align-items: flex-start;
+        padding-top: 5px;
       }
 
       .terminal-container {
         padding: 5px;
         width: 100%;
+        height: 100%;
+        min-height: 100vh;
       }
 
       .jquery-terminal {
         font-size: 11px;
         line-height: 1.3;
+        min-height: 300px !important;
       }
 
       .terminal-container .terminal {
         width: 100% !important;
-        height: 70vh !important;
-        max-height: 500px;
+        height: auto !important;
+        min-height: 300px !important;
       }
     }
 
@@ -116,9 +122,14 @@
 </head>
 
 <body>
+  <noscript>
+    <div style="color: #0f0; background: #000; padding: 20px; font-family: monospace; text-align: center;">
+      JavaScript is required to view this website. Please enable JavaScript in your browser.
+    </div>
+  </noscript>
   <div class="terminal-container">
     <div class="terminal"></div>
-</div>
+  </div>
   <script>
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
