@@ -38,7 +38,7 @@ function safeRedirect(url) {
 
 var App = {
     echo: function(text) {
-        this.echo(sanitizeInput(text));
+        this.echo('[[b;#66ffff;]' + sanitizeInput(text) + ']');
         if (typeof gtag !== 'undefined') gtag('event', 'echo', { text: sanitizeInput(text) });
     },
     help: function() {
@@ -149,17 +149,6 @@ $(document).ready(function() {
     const isMobile = window.matchMedia("only screen and (max-width: 480px)").matches;
     const isTablet = window.matchMedia("only screen and (max-width: 768px)").matches;
 
-    let termWidth = '600px';
-    let termHeight = '400px';
-
-    if (isMobile) {
-        termWidth = '100%';
-        termHeight = '350px';
-    } else if (isTablet) {
-        termWidth = '90%';
-        termHeight = '400px';
-    }
-
     // Simplified greeting for mobile
     const mobileGreeting = "[[b;#66ffff;]" +
         "SYSTEM BOOT COMPLETE.............................( OK )\n\n" +
@@ -201,9 +190,7 @@ $(document).ready(function() {
         "root]@lexiethach.com:~# env\n[[b;#66ffff;]NAME=LexieThach\nTITLE=SecurityEngineer;RobotHacker\nMEDIUMBLOG=https://medium.com/@alex.thach3\nGITHUB=https://github.com/Lexicon121\nBLUESKY=@lexiecon.bsky.social\n_=/usr/bin/env]";
 
     function startTerminal() {
-        const terminal = $('.terminal').terminal(App, {
-            width: termWidth,
-            height: termHeight,
+        $('.terminal').terminal(App, {
             greetings: isMobile ? mobileGreeting : desktopGreeting,
             prompt: function(p) {
                 var path = '~';
@@ -212,11 +199,16 @@ $(document).ready(function() {
             onBlur: function() {
                 return false;
             },
-            tabcompletion: true
+            tabcompletion: true,
+            scrollOnEcho: true,
+            enabled: true
         });
 
         setTimeout(() => {
-            $('.terminal').find('input').focus();
+            const terminal = $('.terminal').terminal();
+            if (terminal && terminal.focus) {
+                terminal.focus();
+            }
         }, 100);
     }
 
